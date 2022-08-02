@@ -4,6 +4,12 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Necesito Permisos para acceder a la galeria de fotos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Necesito Permisos para acceder a la Camara</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Necesito Permisos para acceder a al microfono</string>
 	<key>CFBundleDisplayName</key>
 	<string>Untitled1</string>
 	<key>CFBundleExecutable</key>

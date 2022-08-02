@@ -13,7 +13,7 @@ class  RegisterPage extends StatelessWidget {
         children: [
           _backGroundCover(context),
           _boxForm(context),
-          _imageUser(),
+          _imageUser(context),
           _buttonBack()
         ],
       ),
@@ -53,7 +53,7 @@ class  RegisterPage extends StatelessWidget {
             _textFieldPhone(),
             _textFieldPassword(),
             _textFieldConfirmPassword(),
-            _buttonRegister()
+            _buttonRegister(context)
           ],
         ),
       ),
@@ -157,12 +157,12 @@ class  RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _buttonRegister(){
+  Widget _buttonRegister(BuildContext context){
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       child: ElevatedButton(
-          onPressed: () => con.register(),
+          onPressed: () => con.register(context),
           style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 15)
           ),
@@ -176,18 +176,22 @@ class  RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _imageUser(){
+  Widget _imageUser(BuildContext context){
 return SafeArea(
   child:   Container(
     margin: EdgeInsets.only(top: 25),
     alignment: Alignment.topCenter,
     child: GestureDetector(
-      onTap: (){},
-      child: CircleAvatar(
-        backgroundImage: AssetImage('assets/img/user_profile.png'),
-        radius: 60,
-        backgroundColor: Colors.white,
-      ),
+      onTap: ()=> con.showAlerDialog(context),
+      child: GetBuilder<RegisterController> (
+        builder: (value) => CircleAvatar(
+          backgroundImage: con.imageFile != null
+              ?  FileImage(con.imageFile !)
+              : AssetImage('assets/img/user_profile.png') as ImageProvider,
+          radius: 60,
+          backgroundColor: Colors.white,
+        ),
+      )
     ),
   ),
 );

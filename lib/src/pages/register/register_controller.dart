@@ -1,5 +1,14 @@
+import 'dart:io';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
+import 'package:untitled1/src/models/response_api.dart';
+import 'package:untitled1/src/models/user.dart';
+import 'package:untitled1/src/providers/users_providers.dart';
 
 class RegisterController extends GetxController {
 
@@ -10,7 +19,12 @@ class RegisterController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  void register() {
+  UsersProviders usersProviders = UsersProviders();
+
+  ImagePicker picker = ImagePicker();
+  File? imageFile;
+
+  void register(BuildContext context) async {
     String email = emailController.text.trim();
     String name = nameController.text;
     String lastname = lastnameController.text;
@@ -22,8 +36,36 @@ class RegisterController extends GetxController {
     print('Password ${password}');
 
     if (isValidForm(email, name, lastname, phone, password, confirmPassword)) {
-      Get.snackbar('Formulario valido', 'Estas listo para enviar la peticion Http');
+
+      ProgressDialog progressDialog = ProgressDialog(context: context);
+      progressDialog.show(max: 100, msg: 'Registrando datos....');
+
+      User user = User(
+        email: email,
+         name: name,
+        lastname: lastname,
+        phone: phone,
+        password: password
+      );
+
+       Stream stream = await  usersProviders.createWithImage(user, imageFile !); //esta validado en la parte inferior
+      stream.listen((res) {
+
+        progressDialog.close();
+        ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
+
+        if(responseApi.success == true) {
+          GetStorage().write('user', responseApi.data);  //si todo esta bien almacenamos aca los datos del usuario
+          goToHomePage();
+        }else{
+          Get.snackbar('Registro fallido', responseApi.message ?? '');
+        }
+      });
     }
+  }
+
+  void goToHomePage(){
+    Get.offNamedUntil('/home', (route) => false);
   }
 
   bool isValidForm(
@@ -74,8 +116,58 @@ class RegisterController extends GetxController {
       Get.snackbar('Formulario no valido', 'los password no coinciden');
       return false;
     }
+    if(imageFile == null ){
+      Get.snackbar('Formulario no valido', 'Debes seleccionar una imagen de perfil');
+      return false;
+    }
 
     return true;
   }
+
+  Future selectImage( ImageSource imageSource) async {
+    XFile? image = await picker.pickImage(source: imageSource);
+    if( image != null) {
+      imageFile = File(image.path);
+
+      update();
+    }
+  }
+
+  void showAlerDialog(BuildContext context){
+    Widget galleryButton = ElevatedButton(
+        onPressed: () {
+      Get.back();
+      selectImage(ImageSource.gallery);
+      
+    }, child: Text(
+        'GALERIA',
+      style: TextStyle(
+        color: Colors.black
+      ),
+    )
+    );
+    Widget cameraButton = ElevatedButton(
+        onPressed: () {
+          Get.back();
+          selectImage(ImageSource.camera);
+    }, child: Text(
+        'CAMARA',
+        style: TextStyle(
+        color: Colors.black
+    ),
+    )
+    );
+    AlertDialog alertDialog= AlertDialog(
+      title: Text('SELECCIONA UNA OPCION'),
+      actions: [
+        galleryButton,
+        cameraButton
+      ],
+    );
+    showDialog(context: context, builder: (BuildContext contex){
+      return alertDialog;
+
+    });
+      }
 
 }
