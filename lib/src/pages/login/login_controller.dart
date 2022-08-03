@@ -7,12 +7,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:untitled1/src/models/response_api.dart';
+import 'package:untitled1/src/models/user.dart';
 import 'package:untitled1/src/providers/users_providers.dart';
 
 
 
 
 class LoginController extends GetxController{
+
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -31,7 +34,12 @@ class LoginController extends GetxController{
       print('Response api:  ${responseApi.toJson()}');
       if(responseApi.success == true ) {
         GetStorage().write('user', responseApi.data);  //si todo esta bien almacenamos aca los datos del usuario
-        goToHomePage();
+        User user = User.fromJson(GetStorage().read('user') ?? {});
+        if( user.roles!.length > 1 ) {
+                 goToRolesPage();
+        }else {  //SOLO UN ROL
+            goToClientProductPage();
+        }
        // Get.snackbar(
          //   'Login Exitoso', responseApi.message ?? '');  //validar el string por si viene nullo
       }else{
@@ -40,8 +48,11 @@ class LoginController extends GetxController{
     }
   }
 
-  void goToHomePage(){
-    Get.offNamedUntil('/home', (route) => false);
+  void goToClientProductPage(){
+    Get.offNamedUntil('/client/products/list', (route) => false);
+  }
+  void goToRolesPage(){
+    Get.offNamedUntil('/roles', (route) => false);
   }
   bool isValidForm(String email, String password) {
 
