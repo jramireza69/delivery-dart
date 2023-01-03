@@ -14,10 +14,7 @@ import 'package:untitled1/src/providers/users_providers.dart';
 import '../info/client_profile_info_controller.dart';
 
 class ClientProfileUpdateController extends  GetxController {
-
   User user = User.fromJson(GetStorage().read('user'));
-
-
 
   TextEditingController nameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
@@ -42,12 +39,10 @@ class ClientProfileUpdateController extends  GetxController {
     String phone = phoneController.text;
 
     if (isValidForm( name, lastname, phone)) {
-
       ProgressDialog progressDialog = ProgressDialog(context: context);
       progressDialog.show(max: 100, msg: 'Actualizando datos....');
 
       User myUser = User(
-
           id: user.id,
           name: name,
           lastname: lastname,
@@ -58,14 +53,13 @@ class ClientProfileUpdateController extends  GetxController {
       if( imageFile == null) {
       ResponseApi responseApi = await usersProviders.update(myUser);
 
-      print('ResponseApi sin imagen: ${responseApi.data}');
-      Get.snackbar('Proceso terminado', responseApi.message ?? '');
+      print('ResponseApi Update sin imagen: ${responseApi.data}');
+      Get.snackbar('Actualizacion completa Proceso terminado sin imagen', responseApi.message ?? '');
 
       progressDialog.close();
            if(responseApi.success == true ) {
              GetStorage().write('user', responseApi.data);
              clientProfileInfoController.user.value = User.fromJson(GetStorage().read('user') ?? {});
-
            }
       }
       else{
@@ -75,7 +69,7 @@ class ClientProfileUpdateController extends  GetxController {
           progressDialog.close();
           ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
           print('ResponseApi: ${responseApi.data}');
-          Get.snackbar('Proceso terminado', responseApi.message ?? '');
+          Get.snackbar('Actualizacion completa Proceso terminado', responseApi.message ?? '');
 
 
           if(responseApi.success == true) {

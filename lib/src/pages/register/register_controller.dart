@@ -32,14 +32,13 @@ class RegisterController extends GetxController {
     String password = passwordController.text.trim();
     String confirmPassword = confirmPasswordController.text.trim();
 
-    print('Email ${email}');
-    print('Password ${password}');
+
 
     if (isValidForm(email, name, lastname, phone, password, confirmPassword)) {
 
       ProgressDialog progressDialog = ProgressDialog(context: context);
       progressDialog.show(max: 100, msg: 'Registrando datos....');
-
+        //creo el objeto de la clase para pasarle los datos del celular
       User user = User(
         email: email,
          name: name,
@@ -55,7 +54,8 @@ class RegisterController extends GetxController {
         ResponseApi responseApi = ResponseApi.fromJson(json.decode(res));
 
         if(responseApi.success == true) {
-          GetStorage().write('user', responseApi.data);  //si todo esta bien almacenamos aca los datos del usuario
+          GetStorage().write('user', responseApi.data);
+          print('Response api:  ${responseApi.toJson()}');//si todo esta bien almacenamos aca los datos del usuario
           goToHomePage();
         }else{
           Get.snackbar('Registro fallido', responseApi.message ?? '');
@@ -65,7 +65,7 @@ class RegisterController extends GetxController {
   }
 
   void goToHomePage(){
-    Get.offNamedUntil('/home', (route) => false);
+    Get.offNamedUntil('/client/products/list', (route) => false);
   }
 
   bool isValidForm(

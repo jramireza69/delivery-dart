@@ -31,11 +31,11 @@ class LoginController extends GetxController{
    
     if (isValidForm(email, password)) {
       ResponseApi responseApi = await usersProviders.login(email, password);
-      print('Response api:  ${responseApi.toJson()}');
+      print('Response api desde provider:  ${responseApi.toJson()}');
       if(responseApi.success == true ) {
         GetStorage().write('user', responseApi.data);  //si todo esta bien almacenamos aca los datos del usuario
         User user = User.fromJson(GetStorage().read('user') ?? {});
-        if( user.roles!.length > 1 ) {
+        if( user.roles!.length > 1 ) {//igual validacion del main roles para que elija o a clientes
                  goToRolesPage();
         }else {  //SOLO UN ROL
             goToClientProductPage();

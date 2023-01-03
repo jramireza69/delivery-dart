@@ -35,7 +35,7 @@ class User {
   });
 
 
-
+//metodo from json que recibe un mapa de valores y retorna un objeto de tipo User
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     email: json["email"],
@@ -48,6 +48,8 @@ class User {
     roles: json["roles"] == null ? [] : List<Rol>.from(json["roles"].map((model) => Rol.fromJson(model))),
   );
 
+  //transforma un objeto de tipo map como si fuera de tipo json los transforma para enviarlos
+  //transforma el modelo User a una objeto de tipo Map como si fuera un objeto json
   Map<String, dynamic> toJson() => {
     "id": id,
     "email": email,
