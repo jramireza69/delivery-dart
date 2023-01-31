@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:untitled1/src/pages/client/products/list/client_products_list_controller.dart';
-import 'package:untitled1/src/pages/client/profile/info/client_profile_info_page.dart';
-import 'package:untitled1/src/pages/delivery/orders/list/delivery_orders_list_page.dart';
-import 'package:untitled1/src/pages/restaurant/orders/list/restaurant_orders_list_page.dart';
-import 'package:untitled1/src/utils/custom_animated_bottom_bar.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:untitled1/src/widgets/no_data_widget.dart';
 
-
+import '../../../../models/category.dart';
+import '../../../../models/product.dart';
+import 'client_products_list_controller.dart';
 
 class ClientProductsListPage extends StatelessWidget {
 
@@ -14,49 +13,113 @@ class ClientProductsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: _bottonBar(),
-      body: Obx(() =>  IndexedStack(
-        index: con.indexTab.value,
+
+    return Obx(() =>  DefaultTabController(
+      length: con.categories.length,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: AppBar(
+            bottom: TabBar(
+              isScrollable: true,
+              indicatorColor: Colors.amber,
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.grey[600] ,
+              tabs: List<Widget>.generate(con.categories.length, (index) {
+                return Tab(
+                  child: Text(
+                    con.categories[index].name ?? ''
+                  ),
+                );
+              }),
+            ),
+          ),
+        ),
+        body: TabBarView(
+          children: con.categories.map((Category category) {
+            return FutureBuilder(
+              future: con.getProducts(category.id ?? '1' ),
+                builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+                if(snapshot.hasData) {
+                  if (snapshot.data!.length > 0) {
+                    return ListView.builder(
+                        itemCount: snapshot.data?.length ?? 0,
+                        itemBuilder: (_, index) {
+                          return _cardProduct(context, snapshot.data![index]);
+                        }
+                    );
+                   } else {
+                    return NoDataWidget(text: 'No hay productos');
+                  }
+                }
+                else {
+                  return NoDataWidget(text: 'No hay productos');
+                }
+                }
+            );
+          }).toList(),
+        ),
+      ),
+    ));
+  }
+
+  Widget _cardProduct(BuildContext context ,Product product){
+    return GestureDetector(
+      onTap: () => con.modalBottomSheet(context, product),
+      child: Column(
         children: [
-          RestaurantOrdersListPage(),
-          DeliveryOrdersListPage(),
-          ClientProfileInfoPage()
+          Container(
+            margin: EdgeInsets.only(top: 15, left: 20, right: 20),
+            child: ListTile(
+              title: Text(product.name ?? ''),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 5,),
+                  Text(
+                      product.description ?? '',
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 13
+                    ),
+                  ),
+
+                    SizedBox(height: 10,),
+                  Text(
+
+                    '\$  ${product.price.toString()}',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold
+                  ),
+                  ),
+                  SizedBox(height: 20,),
+                ],
+              ),
+              trailing: Container(  //border redondeado imagenes
+                height: 70,
+                width: 60,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: FadeInImage(
+                    image: product.image1 != null
+                         ?NetworkImage(product.image1!)
+                         :AssetImage('assets/img/no-image.png') as ImageProvider,
+                    fit: BoxFit.cover,
+                    fadeInDuration: Duration(milliseconds: 50),
+                    placeholder: AssetImage('assets/img/no-image.png') ,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Divider(height: 1, color:  Colors.grey[300], indent: 40, endIndent: 40,)
         ],
-      ))
+      ),
     );
   }
 
-  Widget _bottonBar(){
-    return  Obx(() =>  CustomAnimatedBottomBar(
-      containerHeight: 70,
-        backgroundColor: Colors.amber,
-        showElevation: true,
-        itemCornerRadius: 24,
-        curve: Curves.easeIn,
-        selectedIndex: con.indexTab.value,
-      onItemSelected: (index) => con.changeTab(index),
-        items: [
-          BottomNavyBarItem(
-              icon: Icon(Icons.apps),
-              title: Text('HOME'),
-            activeColor: Colors.white,
-            inactiveColor: Colors.white
 
-          ),
-          BottomNavyBarItem(
-              icon: Icon(Icons.list),
-              title: Text('Mis Pedidos'),
-              activeColor: Colors.white,
-              inactiveColor: Colors.white
-          ),
-          BottomNavyBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Perfil'),
-              activeColor: Colors.white,
-              inactiveColor: Colors.white
-          ),
-        ],
-        ));
-  }
+
+
 }

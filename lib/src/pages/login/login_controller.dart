@@ -38,7 +38,7 @@ class LoginController extends GetxController{
         if( user.roles!.length > 1 ) {//igual validacion del main roles para que elija o a clientes
                  goToRolesPage();
         }else {  //SOLO UN ROL
-            goToClientProductPage();
+          goToClientHomePage();
         }
        // Get.snackbar(
          //   'Login Exitoso', responseApi.message ?? '');  //validar el string por si viene nullo
@@ -48,8 +48,8 @@ class LoginController extends GetxController{
     }
   }
 
-  void goToClientProductPage(){
-    Get.offNamedUntil('/client/products/list', (route) => false);
+  void goToClientHomePage(){
+    Get.offNamedUntil('/client/home', (route) => false);
   }
   void goToRolesPage(){
     Get.offNamedUntil('/roles', (route) => false);
