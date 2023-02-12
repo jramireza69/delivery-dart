@@ -11,8 +11,12 @@ void signOut(){
   GetStorage().remove('user');
   Get.offNamedUntil('/', (route) => false);
 }
-
 void goToProfileUpdate(){
   Get.toNamed('/client/profile/update');
 }
+void goToRoles(){
+  //eliminar todo el historial de pantallas
+  Get.offNamedUntil('/roles', (route) => false);
+}
+
 }

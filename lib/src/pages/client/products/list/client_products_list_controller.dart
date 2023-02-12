@@ -36,7 +36,10 @@ class ClientProductsListController extends GetxController {
 
 
 
-  goToOrderCreate() {}
+
+  void goToOrderCreate(){
+    Get.toNamed('/client/orders/create');
+  }
 
   Future<List<Product>> getProducts(String idCategory) async {
     return await  productsProvider.findByCategory(idCategory);

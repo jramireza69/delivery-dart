@@ -4,19 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
 import 'package:untitled1/src/models/product.dart';
+import 'package:untitled1/src/pages/client/products/detail/client_products_detail_controller.dart';
 import 'package:untitled1/src/pages/client/products/list/client_products_list_controller.dart';
 
 class ClientProductsDetailPage extends StatelessWidget {
 
   Product? product ;
   //instanciamos
-  ClientProductsListController con = Get.put(ClientProductsListController());
+  late ClientProductsDetailController con ;
+  var counter = 0.obs;
+  var price = 0.0.obs;
 
-  ClientProductsDetailPage({@required this.product});
+  ClientProductsDetailPage({ @required this.product }){
+   con =  Get.put(ClientProductsDetailController());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    con.checkIfProductWasAdded(product!, price, counter);
+    return Obx(() => Scaffold(
       bottomNavigationBar: Container(
         height: 100,
           child: _buttonsAddToBad()),
@@ -28,7 +34,7 @@ class ClientProductsDetailPage extends StatelessWidget {
           _textPriceProduct()
         ],
       )
-    );
+    ));
   }
 
   Widget _imageSliderShow(BuildContext context){
@@ -121,7 +127,7 @@ class ClientProductsDetailPage extends StatelessWidget {
           child: Row(
             children: [
               ElevatedButton(
-                onPressed: (){},
+                onPressed: () => con.removeItem(product!, price, counter),
                 child: Text(
                   '-',
                   style: TextStyle(
@@ -144,7 +150,7 @@ class ClientProductsDetailPage extends StatelessWidget {
               ElevatedButton(
                 onPressed: (){},
                 child: Text(
-                  '0',
+                  '${counter.value}',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 22
@@ -157,7 +163,7 @@ class ClientProductsDetailPage extends StatelessWidget {
 
               ),
               ElevatedButton(
-                onPressed: (){},
+                onPressed: () => con.addItem(product!, price, counter),
                 child: Text(
                   '+',
                   style: TextStyle(
@@ -178,9 +184,9 @@ class ClientProductsDetailPage extends StatelessWidget {
               ),
               Spacer(),
               ElevatedButton(
-                onPressed: (){},
+                onPressed: () => con.addToBag(product!, price, counter),
                 child: Text(
-                  'Agregar ${ product?.price ?? ''}',
+                  'Agregar ${ price.value }',
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 15
