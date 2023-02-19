@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'client_address_create_controller.dart';
 
 class ClientAddressCreatePage extends StatelessWidget {
-  const ClientAddressCreatePage({Key? key}) : super(key: key);
-
+  ClientAddressCreateController con = Get.put(ClientAddressCreateController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,13 +77,13 @@ class ClientAddressCreatePage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        onTap: () {} //=> con.openGoogleMaps(context),
-        //controller: con.refPointController,
-        //autofocus: false,
-        //focusNode: AlwaysDisabledFocusNode(),
-        //keyboardType: TextInputType.text,
-        //decoration: const InputDecoration(
-          //  hintText: 'Referencia', prefixIcon: Icon(Icons.map)),
+        onTap: ()  => con.openGoogleMaps(context),
+        controller: con.refPointController,
+        autofocus: false,
+        focusNode: AlwaysDisabledFocusNode(),
+        keyboardType: TextInputType.text,
+        decoration: const InputDecoration(
+            hintText: 'Referencia', prefixIcon: Icon(Icons.map)),
       ),
     );
   }
@@ -127,6 +129,11 @@ class ClientAddressCreatePage extends StatelessWidget {
       ),
     );
   }
+}
+
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
 }
 
 
