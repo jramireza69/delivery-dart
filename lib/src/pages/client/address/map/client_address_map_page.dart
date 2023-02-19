@@ -23,7 +23,11 @@ class ClientAddressMapPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          _googleMap()
+          _googleMap(),
+          _iconMyLocation(),
+          _cardAddress(),
+          Spacer(),
+          _buttonAccept(context)
         ],
       ),
     );
@@ -39,6 +43,55 @@ class ClientAddressMapPage extends StatelessWidget {
       onCameraMove: (position) {
         con.initialPosition = position;
       },
+    );
+  }
+  Widget _iconMyLocation() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 60),
+      child: Center(
+        child: Image.asset(
+          'assets/img/my_location.png',
+          width: 65,
+          height: 65,
+        ),
+      ),
+    );
+  }
+  Widget _cardAddress() {
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.topCenter,
+      margin: const EdgeInsets.symmetric(vertical: 30),
+      child: Card(
+        color: Colors.grey[800],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: const Text(
+            'con.addressName.value',
+            style: TextStyle(
+                color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buttonAccept(BuildContext context) {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 30),
+      child: ElevatedButton(
+        onPressed: () {},
+        child: Text(
+          'SELECCIONAR ESTE PUNTO',
+          style: TextStyle(color: Colors.black),
+        ),
+        style: ElevatedButton.styleFrom(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            padding: EdgeInsets.all(15)),
+      ),
     );
   }
 }
