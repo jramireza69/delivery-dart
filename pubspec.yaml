@@ -43,6 +43,9 @@ dependencies:
   flutter_image_slideshow: ^0.1.4
   fluttertoast: ^8.1.2
   google_maps_flutter: ^2.2.3
+  geolocator: ^8.2.0
+  geocoding: ^2.0.4
+  location: ^4.2.0
 
 dev_dependencies:
   flutter_test:

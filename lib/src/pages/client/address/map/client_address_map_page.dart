@@ -9,7 +9,7 @@ class ClientAddressMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(() => Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
             color: Colors.black
@@ -26,11 +26,11 @@ class ClientAddressMapPage extends StatelessWidget {
           _googleMap(),
           _iconMyLocation(),
           _cardAddress(),
-          Spacer(),
+          const Spacer(),
           _buttonAccept(context)
         ],
       ),
-    );
+    ));
   }
 
   Widget _googleMap(){
@@ -43,11 +43,14 @@ class ClientAddressMapPage extends StatelessWidget {
       onCameraMove: (position) {
         con.initialPosition = position;
       },
+      onCameraIdle: () async {
+        await con.setLocationDraggableInfo();//EMPIEZA A OBTENER LA LAT Y LNG DE LA POSICION CENTRAL DEL MAPA
+      },
     );
   }
   Widget _iconMyLocation() {
     return Container(
-      margin: EdgeInsets.only(bottom: 60),
+      margin: const EdgeInsets.only(bottom: 60),
       child: Center(
         child: Image.asset(
           'assets/img/my_location.png',
@@ -66,10 +69,10 @@ class ClientAddressMapPage extends StatelessWidget {
         color: Colors.grey[800],
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: const Text(
-            'con.addressName.value',
-            style: TextStyle(
+          padding:  const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child:  Text(
+            con.addressName.value ,
+            style: const TextStyle(
                 color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
           ),
         ),
@@ -80,9 +83,9 @@ class ClientAddressMapPage extends StatelessWidget {
     return Container(
       alignment: Alignment.bottomCenter,
       width: double.infinity,
-      margin: EdgeInsets.only(bottom: 30),
+      margin: const EdgeInsets.only(bottom: 30),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => con.selectRefPoint(context),
         child: Text(
           'SELECCIONAR ESTE PUNTO',
           style: TextStyle(color: Colors.black),

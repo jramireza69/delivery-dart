@@ -24,6 +24,7 @@ class ClientAddressCreatePage extends StatelessWidget {
       color: Colors.amber,
     );
   }
+
   Widget _boxForm(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.45,
@@ -51,33 +52,36 @@ class ClientAddressCreatePage extends StatelessWidget {
       ),
     );
   }
+
   Widget _textFieldAddress() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        //controller: con.addressController,
+        controller: con.addressController,
         keyboardType: TextInputType.text,
         decoration: const InputDecoration(
             hintText: 'Direccion', prefixIcon: Icon(Icons.category)),
       ),
     );
   }
+
   Widget _textFieldNeighbordhood() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        //controller: //con.neighborhoodController,
-        //keyboardType: TextInputType.text,
+        controller: con.neighborhoodController,
+        keyboardType: TextInputType.text,
         decoration: const InputDecoration(
             hintText: 'Barrio', prefixIcon: Icon(Icons.location_city)),
       ),
     );
   }
+
   Widget _textFieldRefPoint(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 40),
       child: TextField(
-        onTap: ()  => con.openGoogleMaps(context),
+        onTap: () => con.openGoogleMaps(context),
         controller: con.refPointController,
         autofocus: false,
         focusNode: AlwaysDisabledFocusNode(),
@@ -87,12 +91,15 @@ class ClientAddressCreatePage extends StatelessWidget {
       ),
     );
   }
+
   Widget _buttonCreate(BuildContext context) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
       child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            con.createAddress();
+          },
           style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 15)),
           child: Text(
@@ -101,6 +108,7 @@ class ClientAddressCreatePage extends StatelessWidget {
           )),
     );
   }
+
   Widget _textNewAddress(BuildContext context) {
     return SafeArea(
       child: Container(
@@ -118,6 +126,7 @@ class ClientAddressCreatePage extends StatelessWidget {
       ),
     );
   }
+
   Widget _textYourInfo() {
     return Container(
       margin: const EdgeInsets.only(top: 40, bottom: 30),
@@ -135,6 +144,3 @@ class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
 }
-
-
-
