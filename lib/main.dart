@@ -6,6 +6,7 @@ import 'package:untitled1/src/pages/client/address/create/client_address_create_
 import 'package:untitled1/src/pages/client/address/list/client_address_list_page.dart';
 import 'package:untitled1/src/pages/client/home/client_home_page.dart';
 import 'package:untitled1/src/pages/client/orders/create/client_orders_create_page.dart';
+import 'package:untitled1/src/pages/client/payments/create/client_payments_create_page.dart';
 import 'package:untitled1/src/pages/client/products/list/client_products_list_page.dart';
 import 'package:untitled1/src/pages/client/profile/info/client_profile_info_page.dart';
 import 'package:untitled1/src/pages/client/profile/update/client_profile_update_page.dart';
@@ -65,6 +66,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/client/orders/create', page: () => ClientOrdersCreatePage()),
         GetPage(name: '/client/address/create', page: () => ClientAddressCreatePage()),
         GetPage(name: '/client/address/list', page: () => ClientAddressListPage()),
+        GetPage(name: '/client/payments/create', page: () => ClientPaymentsCreatePage()),
 
       ],
       theme: ThemeData(
