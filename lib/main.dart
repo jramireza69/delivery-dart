@@ -15,6 +15,7 @@ import 'package:untitled1/src/pages/home/home_page.dart';
 import 'package:untitled1/src/pages/login/login_page.dart';
 import 'package:untitled1/src/pages/register/register_page.dart';
 import 'package:untitled1/src/pages/restaurant/home/restaurant_home_page.dart';
+import 'package:untitled1/src/pages/restaurant/orders/detail/restaurant_orders_detail_page.dart';
 import 'package:untitled1/src/pages/restaurant/orders/list/restaurant_orders_list_page.dart';
 
 import 'src/pages/roles/roles_page.dart';  //usu funcionalidades de getx
@@ -56,8 +57,9 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/register', page: () => RegisterPage()),
         GetPage(name: '/home', page: () => HomePage()),
         GetPage(name: '/roles', page: () => RolesPage()),
-        GetPage(name: '/restaurant/orders/list', page: () => RestaurantOrdersListPage()),
         GetPage(name: '/restaurant/home', page: () => RestaurantHomePage()),
+        GetPage(name: '/restaurant/orders/list', page: () => RestaurantOrdersListPage()),
+        GetPage(name: '/restaurant/orders/detail', page: () => RestaurantOrdersDetailPage()),
         GetPage(name: '/delivery/orders/list', page: () => DeliveryOrdersListPage()),
         GetPage(name: '/client/products/list', page: () => ClientProductsListPage()),
         GetPage(name: '/client/home', page: () => ClientHomePage()),

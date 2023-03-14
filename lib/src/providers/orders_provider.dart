@@ -14,9 +14,9 @@ class OrdersProvider extends GetConnect {
 
   User userSession = User.fromJson(GetStorage().read('user') ?? {});
 
-  /*Future<List<Category>> getAll() async {
+  Future<List<Order>> findByStatus(String status) async {
     Response response = await get(
-        '$url/getAll',
+        '$url/findByStatus/$status',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': userSession.sessionToken ?? ''
@@ -28,10 +28,10 @@ class OrdersProvider extends GetConnect {
       return [];
     }
 
-    List<Category> categories = Category.fromJsonList(response.body);
+    List<Order> orders = Order.fromJsonList(response.body);
 
-    return categories;
-  }*/
+    return orders;
+  }
 
   Future<ResponseApi> create(Order order) async {
     Response response= await post(
@@ -45,4 +45,20 @@ class OrdersProvider extends GetConnect {
     ResponseApi responseApi = ResponseApi.fromJson(response.body);
     return responseApi;
   }
+
+  Future<ResponseApi> updateToDispatched(Order order) async {
+    Response response = await put(
+        '$url/updateToDispatched',
+        order.toJson(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': userSession.sessionToken ?? ''
+        }
+    ); // ESPERAR HASTA QUE EL SERVIDOR NOS RETORNE LA RESPUESTA
+
+    ResponseApi responseApi = ResponseApi.fromJson(response.body);
+
+    return responseApi;
+  }
+
 }
