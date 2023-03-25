@@ -27,9 +27,23 @@ class OrdersProvider extends GetConnect {
       Get.snackbar('Peticion denegada', 'Tu usuario no tiene permitido leer esta informacion');
       return [];
     }
-
     List<Order> orders = Order.fromJsonList(response.body);
+    return orders;
+  }
+  Future<List<Order>> findByDeliveryAndStatus(String idDelivery,String status) async {
+    Response response = await get(
+        '$url/findByDeliveryAndStatus/$idDelivery/$status',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': userSession.sessionToken ?? ''
+        }
+    ); // ESPERAR HASTA QUE EL SERVIDOR NOS RETORNE LA RESPUESTA
 
+    if (response.statusCode == 401) {
+      Get.snackbar('Peticion denegada', 'Tu usuario no tiene permitido leer esta informacion');
+      return [];
+    }
+    List<Order> orders = Order.fromJsonList(response.body);
     return orders;
   }
 
@@ -49,6 +63,20 @@ class OrdersProvider extends GetConnect {
   Future<ResponseApi> updateToDispatched(Order order) async {
     Response response = await put(
         '$url/updateToDispatched',
+        order.toJson(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': userSession.sessionToken ?? ''
+        }
+    ); // ESPERAR HASTA QUE EL SERVIDOR NOS RETORNE LA RESPUESTA
+
+    ResponseApi responseApi = ResponseApi.fromJson(response.body);
+
+    return responseApi;
+  }
+  Future<ResponseApi> updateToOnTheWay(Order order) async {
+    Response response = await put(
+        '$url/updateToOnTheWay',
         order.toJson(),
         headers: {
           'Content-Type': 'application/json',

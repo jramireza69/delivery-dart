@@ -10,7 +10,10 @@ import 'package:untitled1/src/pages/client/payments/create/client_payments_creat
 import 'package:untitled1/src/pages/client/products/list/client_products_list_page.dart';
 import 'package:untitled1/src/pages/client/profile/info/client_profile_info_page.dart';
 import 'package:untitled1/src/pages/client/profile/update/client_profile_update_page.dart';
+import 'package:untitled1/src/pages/delivery/home/delivery_home_page.dart';
+import 'package:untitled1/src/pages/delivery/orders/detail/delivery_orders_detail_page.dart';
 import 'package:untitled1/src/pages/delivery/orders/list/delivery_orders_list_page.dart';
+import 'package:untitled1/src/pages/delivery/orders/map/delivery_orders_map_page.dart';
 import 'package:untitled1/src/pages/home/home_page.dart';
 import 'package:untitled1/src/pages/login/login_page.dart';
 import 'package:untitled1/src/pages/register/register_page.dart';
@@ -61,6 +64,9 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: '/restaurant/orders/list', page: () => RestaurantOrdersListPage()),
         GetPage(name: '/restaurant/orders/detail', page: () => RestaurantOrdersDetailPage()),
         GetPage(name: '/delivery/orders/list', page: () => DeliveryOrdersListPage()),
+        GetPage(name: '/delivery/orders/detail', page: () => DeliveryOrdersDetailPage()),
+        GetPage(name: '/delivery/orders/map', page: () => DeliveryOrdersMapPage()),
+        GetPage(name: '/delivery/home', page: () => DeliveryHomePage()),
         GetPage(name: '/client/products/list', page: () => ClientProductsListPage()),
         GetPage(name: '/client/home', page: () => ClientHomePage()),
         GetPage(name: '/client/profile/info', page: () => ClientProfileInfoPage()),
