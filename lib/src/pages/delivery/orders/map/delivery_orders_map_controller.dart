@@ -8,10 +8,12 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as location;
 import 'package:untitled1/src/models/Order.dart';
+import 'package:untitled1/src/providers/orders_provider.dart';
 
 class DeliveryOrdersMapController extends GetxController {
 
   Order order = Order.fromJson(Get.arguments['order'] ?? {});
+  OrdersProvider ordersProvider = OrdersProvider();
   CameraPosition initialPosition =
       CameraPosition(target: LatLng(6.2292512, -75.5629398), zoom: 14);
 
@@ -31,6 +33,20 @@ class DeliveryOrdersMapController extends GetxController {
     print('ORder: ${order.toJson()}');
     checkGPS(); //INICIE VERIFICANDO SI EL GPS ESTA ACTIVO Y REQUERIR LOS SERVICIOS
     print('variable home marker  ${deliveryMarker}');
+  }
+
+  void saveLocation() async {
+    if(position != null ){
+
+      order.lat = position!.latitude;
+      order.lng = position!.longitude;
+
+      await ordersProvider.updateLatLng(order);
+
+
+
+    }
+
   }
   Future animateCameraPosition(double lat, double lng) async {
     GoogleMapController controller = await mapController.future;
@@ -76,6 +92,7 @@ class DeliveryOrdersMapController extends GetxController {
     try {
       await _determinePosition();
       position = await Geolocator.getLastKnownPosition(); //LAT Y LNG MY ACTUAL POSITION
+      saveLocation();
       animateCameraPosition(position?.latitude ?? 6.2292512, position?.longitude ?? -75.5629398);
       addMarker('Delivery',
           position?.latitude ?? 6.236189 ,
