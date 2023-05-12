@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:untitled1/src/pages/delivery/orders/map/delivery_orders_map_controller.dart';
+import 'package:untitled1/src/pages/client/orders/map/client_orders_map_controller.dart';
 
-class DeliveryOrdersMapPage extends StatelessWidget {
+class ClientOrdersMapPage extends StatelessWidget {
 
-  DeliveryOrdersMapController con = Get.put( DeliveryOrdersMapController());
+  ClientOrdersMapController  con = Get.put( ClientOrdersMapController());
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class DeliveryOrdersMapPage extends StatelessWidget {
           body: Stack(
             children: [
               Container(
-                  height: MediaQuery.of(context).size.height * 0.53,
+                  height: MediaQuery.of(context).size.height * 0.67,
                   child: _googleMap()
               ),
               SafeArea(
@@ -62,28 +62,10 @@ class DeliveryOrdersMapPage extends StatelessWidget {
       //markers: Set<Marker>.of(con.markers.values),
     );
   }
-  Widget _buttonAccept(BuildContext context) {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 30),
-      child: ElevatedButton(
-        onPressed: () => con.selectRefPoint(context),
-        child: Text(
-          'ENTREGAR PEDIDO',
-          style: TextStyle(color: Colors.black),
-        ),
-        style: ElevatedButton.styleFrom(
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            padding: EdgeInsets.all(15)),
-      ),
-    );
-  }
 
   Widget _cardOrderInfo(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.48,
+      height: MediaQuery.of(context).size.height * 0.33,
       width: double.infinity, //ancho toda la pantalla
       decoration: BoxDecoration(
           color: Colors.grey[900],
@@ -113,13 +95,12 @@ class DeliveryOrdersMapPage extends StatelessWidget {
               Icons.location_on
           ),
           Divider(color: Colors.grey, endIndent: 30, indent: 30),
-          _clientInfo(),
-          _buttonAccept(context)
+          _deliveryInfo()
         ],
       ),
     );
   }
-  Widget _imageClient() {
+  Widget _imageDelivery() {
     return Container(
       height: 50,
       width: 50,
@@ -127,8 +108,8 @@ class DeliveryOrdersMapPage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: FadeInImage(
-          image: con.order.client!.image != null
-              ? NetworkImage(con.order.client!.image!)
+          image: con.order.delivery!.image != null
+              ? NetworkImage(con.order.delivery!.image!)
               : AssetImage('assets/img/no-image.png') as ImageProvider,
           fit: BoxFit.cover,
           fadeInDuration: Duration(milliseconds: 50),
@@ -180,15 +161,15 @@ class DeliveryOrdersMapPage extends StatelessWidget {
       ),
     );
   }
-  Widget _clientInfo() {
+  Widget _deliveryInfo() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
       child: Row(
         children: [
-          _imageClient(),
+          _imageDelivery(),
           SizedBox(width: 15),
           Text(
-            '${con.order.client?.name ?? ''} ${con.order.client?.lastname ?? ''}',
+            '${con.order.delivery?.name ?? ''} ${con.order.delivery?.lastname ?? ''}',
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,

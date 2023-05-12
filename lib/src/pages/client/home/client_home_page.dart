@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled1/src/pages/client/home/client_home_controller.dart';
+import 'package:untitled1/src/pages/client/orders/list/client_orders_list_page.dart';
 import 'package:untitled1/src/pages/client/products/list/client_products_list_page.dart';
 import 'package:untitled1/src/pages/client/profile/info/client_profile_info_page.dart';
-import 'package:untitled1/src/pages/delivery/orders/list/delivery_orders_list_page.dart';
 import 'package:untitled1/src/utils/custom_animated_bottom_bar.dart';
 
 class ClientHomePage extends StatelessWidget {
@@ -19,7 +19,7 @@ class ClientHomePage extends StatelessWidget {
           index: con.indexTab.value,
           children: [
             ClientProductsListPage(),
-            DeliveryOrdersListPage(),
+            ClientOrdersListPage(),
             ClientProfileInfoPage()
 
           ],

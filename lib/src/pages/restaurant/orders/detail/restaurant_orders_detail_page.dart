@@ -130,14 +130,14 @@ class RestaurantOrdersDetailPage extends StatelessWidget {
                 ),
                 con.order.status == 'PAGADO'
                     ? Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  margin: EdgeInsets.symmetric(horizontal: 17),
                   child: ElevatedButton(
                       onPressed: () => con.updateOrder(),
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.all(12)
                       ),
                       child: Text(
-                        'DESPACHAR ORDEN',
+                        'DESPACHAR',
                         style: TextStyle(
                             color: Colors.black
                         ),
